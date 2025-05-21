@@ -1,13 +1,69 @@
 import React from "react";
-import { Button } from "./components/ui/button";
+import { Route, Routes } from "react-router-dom";
+import AuthLayout from "./components/auth/layout";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import AdminLayout from "./components/admin-view/layout";
+import AdminOrders from "./pages/admin-view/Orders";
+import AdminDashboard from "./pages/admin-view/dashboard";
+import AdminProducts from "./pages/admin-view/Products";
+import AdminFeatures from "./pages/admin-view/Features";
+import ShoopingLayout from "./components/shopping-view/layout";
+import NotFound from "./pages/Not-Found";
+import Home from "./pages/shopping-view/Home";
+import ShoppingListing from "./pages/shopping-view/Listing";
+import ShoppingCheckout from "./pages/shopping-view/Checkout";
+import Account from "./pages/shopping-view/Account";
+import CheckAuth from "./components/common/CheckAuth";
+import UnAuthPage from "./pages/unauthPage";
 
 const App = () => {
+  const isAuthenticated = false;
+  const user = null;
   return (
-    <div>
-      <h1>Ecom</h1>
-      <div className="flex flex-col items-center justify-center min-h-svh">
-        <Button>Click me</Button>
-      </div>
+    <div className="flex flex-col overflow-hidden bg-white">
+      {/* <h1>Header Component</h1> */}
+      <Routes>
+        <Route
+          path="/auth"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AuthLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+        </Route>
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="features" element={<AdminFeatures />} />
+        </Route>
+        <Route
+          path="/shop"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <ShoopingLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="home" element={<Home />} />
+          <Route path="listing" element={<ShoppingListing />} />
+          <Route path="checkout" element={<ShoppingCheckout />} />
+          <Route path="account" element={<Account />} />
+        </Route>
+        <Route path="/unauth-page" element={<UnAuthPage/>} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </div>
   );
 };
